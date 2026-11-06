@@ -10,7 +10,8 @@
 
   const rows = (reports as Report[]).length;
   const groups = $derived(splitTicket(reports as Report[], ticket, tenantOf, notes.oneDayMove));
-  const total = $derived(groups.reduce((n, g) => n + g.reports.length, 0));
+  const total = $derived(groups.filter((g) => g.problem !== 'shift').reduce((n, g) => n + g.reports.length, 0));
+  const shiftIn = $derived(groups.find((g) => g.problem === 'shift')?.reports.length ?? 0);
   const WHAT: Record<Problem, string> = {
     parser: 'shared parser reads day-first dates month first',
     hint: 'booking-v3 form hints MM/DD/YYYY, reads day first',
@@ -40,7 +41,12 @@
   </tbody>
 </table>
 
+{#if shiftIn}
+  <p class="note">The {shiftIn} one-day moves are also counted under their cause by tenant, where the desk filed them.</p>
+{/if}
+
 <style>
   .sum { font-size: 1.1rem; }
+  .note { color: var(--muted); font-size: 0.85em; }
   .none { color: var(--warn); font-weight: 600; }
 </style>

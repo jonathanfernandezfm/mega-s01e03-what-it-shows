@@ -37,10 +37,11 @@ The queued parser fix closes only the first problem. The other two keep coming i
 
 1. **One id, one report.** The ticket export pages overlap, so duplicate rows are dropped first.
 2. **One-day moves** are their own problem: the desk already noted them, and their bodies show a
-   date shifted by a day or differing per attendee's place. A day/month swap cannot do that.
+   date shifted by a day or differing per attendee's place. A day/month swap cannot do that. They
+   still count under their cause by tenant too, as the desk counts them.
 3. **Form reports at a booking-v3 tenant** are the hint problem: people type month first as the
    form's hint tells them, and the form reads the date day first.
-4. **Everything else** at a day-first tenant is the shared parser.
+4. **Every other report** at a day-first tenant is the shared parser.
 
 Intake's tag is a guess from the reporter's browser. It disagrees with the tenant often, so this
 page ignores it except to count how often it was wrong.

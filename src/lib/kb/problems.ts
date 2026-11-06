@@ -1,21 +1,19 @@
-// #4471 split into the problems it holds. Builds on causes.ts: a one-day move the desk noted
-// (desk-notes.json) is its own problem, because a day/month swap cannot move a date by one day.
+// #4471 split into the problems it holds. Builds on causes.ts and counts the desk's way: every report
+// under its cause by tenant, and the one-day moves the desk noted (desk-notes.json) also as their own
+// problem, because a day/month swap cannot move a date by one day. Those few count in both.
 import { causeOf, uniqueById, type Report, type Tenant } from '#lib/kb/causes';
 
 export type Problem = 'parser' | 'hint' | 'shift' | 'unplaced';
 
-export function problemOf(r: Report, t: Tenant | undefined, oneDayMove: readonly string[]): Problem {
-  if (oneDayMove.includes(r.id)) return 'shift';
-  return causeOf(r, t) ?? 'unplaced';
-}
 
 export type ProblemGroup = { problem: Problem; reports: Report[]; tenants: number; firstSeen: string; lastSeen: string; mistagged: number };
 
 export function splitTicket(all: Report[], ticket: number, tenantOf: (r: Report) => Tenant | undefined, oneDayMove: readonly string[]): ProblemGroup[] {
   const by = new Map<Problem, Report[]>();
+  const add = (p: Problem, r: Report) => by.set(p, [...(by.get(p) ?? []), r]);
   for (const r of uniqueById(all).filter((r) => r.mergedInto === ticket)) {
-    const p = problemOf(r, tenantOf(r), oneDayMove);
-    by.set(p, [...(by.get(p) ?? []), r]);
+    add(causeOf(r, tenantOf(r)) ?? 'unplaced', r);
+    if (oneDayMove.includes(r.id)) add('shift', r);
   }
   return [...by.entries()]
     .map(([problem, rs]) => {
