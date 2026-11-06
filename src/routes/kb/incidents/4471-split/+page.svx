@@ -14,9 +14,9 @@ signature: 'v1.eyJzdWIiOiIzODM0IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpY
 
   const repo = 'https://github.com/jonathanfernandezfm/mega-s01e03-what-it-shows/issues/';
   const tickets = {
-    parser: { href: repo + '1', label: 'issue #1' },
-    hint: { href: repo + '2', label: 'issue #2' },
-    shift: { href: repo + '3', label: 'issue #3' },
+    parser: { href: repo + '1', label: 'issue #1 · fixed' },
+    hint: { href: repo + '2', label: 'issue #2 · won’t fix (form retired)' },
+    shift: { href: repo + '3', label: 'issue #3 · open' },
   };
 </script>
 
@@ -26,7 +26,9 @@ report here has a subject about a wrong date, so they all landed in one ticket. 
 channel and body, they split apart.
 
 <Callout kind="warn">
-The queued parser fix closes only the first problem. The other two keep coming in after it ships.
+Engineering closed #4471 on 5 October: the parser is fixed (`fix(dates): parse dd/mm for eu locales`)
+and the booking-v3 hint won't be fixed because that form is retired. Nobody has picked up the
+one-day moves; that ticket is still open.
 </Callout>
 
 ## The split
@@ -46,9 +48,9 @@ The queued parser fix closes only the first problem. The other two keep coming i
 Intake's tag is a guess from the reporter's browser. It disagrees with the tenant often, so this
 page ignores it except to count how often it was wrong.
 
-## What to do with #4471
+## What to do now
 
-- Keep #4471 for the parser problem only. Move the hint and one-day reports to their own tickets.
-- Do not close the hint or one-day tickets when the parser fix ships.
+- Parser and hint tickets are closed with #4471. New day/month swaps after 5 October are a regression, not a duplicate.
+- The one-day move ticket stays open: the parser fix does not touch it. Route new one-day reports there, not to #4471.
 
 <RenderStamp {signature} />
