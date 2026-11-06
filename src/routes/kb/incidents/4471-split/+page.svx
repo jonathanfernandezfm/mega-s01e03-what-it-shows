@@ -1,0 +1,53 @@
+---
+layout: runbook
+title: '#4471 split · three problems, not one'
+owner: jonathanfernandezfm
+status: open
+reviewed: 2026-11-06
+signature: 'v1.eyJzdWIiOiIzODM0IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTM5NTYwNjAsImV4cCI6MTc5NDA0MjQ2MH0.QeV1lIIzz3Kz7e4P-v_dT6tjQDvRtJYRWuOwWUlAPp4'
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const repo = 'https://github.com/jonathanfernandezfm/mega-s01e03-what-it-shows/issues/';
+  const tickets = {
+    parser: { href: repo + '1', label: 'issue #1' },
+    hint: { href: repo + '2', label: 'issue #2' },
+    shift: { href: repo + '3', label: 'issue #3' },
+  };
+</script>
+
+[#4471](/kb/incidents/4471) says one issue, one fix queued. It holds three problems. The desk
+merged on subject line ([decision 0001](/kb/decisions/0001-dedupe-by-subject)), and every
+report here has a subject about a wrong date, so they all landed in one ticket. Read by tenant,
+channel and body, they split apart.
+
+<Callout kind="warn">
+The queued parser fix closes only the first problem. The other two keep coming in after it ships.
+</Callout>
+
+## The split
+
+<ProblemTable ticket={4471} {tickets} />
+
+## How each report is placed
+
+1. **One id, one report.** The ticket export pages overlap, so duplicate rows are dropped first.
+2. **One-day moves** are their own problem: the desk already noted them, and their bodies show a
+   date shifted by a day or differing per attendee's place. A day/month swap cannot do that.
+3. **Form reports at a booking-v3 tenant** are the hint problem: people type month first as the
+   form's hint tells them, and the form reads the date day first.
+4. **Everything else** at a day-first tenant is the shared parser.
+
+Intake's tag is a guess from the reporter's browser. It disagrees with the tenant often, so this
+page ignores it except to count how often it was wrong.
+
+## What to do with #4471
+
+- Keep #4471 for the parser problem only. Move the hint and one-day reports to their own tickets.
+- Do not close the hint or one-day tickets when the parser fix ships.
+
+<RenderStamp {signature} />

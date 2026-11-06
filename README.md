@@ -34,3 +34,9 @@ Support desk. Decision records: whoever signed them.
 ---
 
 Exported 2026-10-04 from the `support` repo, `apps/kb/` → `src/`.
+
+## #4471 split (added 2026-11-06)
+
+- Page: `src/routes/kb/incidents/4471-split/+page.svx` (logic: `src/lib/kb/problems.ts`, `ProblemTable.svelte`)
+- As the desk sees it: `rendered/kb/incidents/4471-split.html` (static build: `npm i && npm run build`)
+- Tickets: issues #1 (parser, 374), #2 (booking-v3 hint, 33), #3 (one-day move, 5)
